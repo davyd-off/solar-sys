@@ -1,0 +1,11 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8}]
+\PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}Введите четырёхзначное число: \PYGZdq{}}\PYG{p}{,} \PYG{n}{end}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{x} \PYG{o}{=} \PYG{n+nb}{input}\PYG{p}{()}
+
+\PYG{k}{if} \PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{x}\PYG{p}{)} \PYG{o}{==} \PYG{l+m+mi}{4}\PYG{p}{:}
+    \PYG{n}{Sum} \PYG{o}{=} \PYG{n+nb}{int}\PYG{p}{(}\PYG{n}{x}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{])} \PYG{o}{+} \PYG{n+nb}{int}\PYG{p}{(}\PYG{n}{x}\PYG{p}{[}\PYG{l+m+mi}{2}\PYG{p}{])}
+    \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}Сумма средних цифр числа = \PYGZdq{}}\PYG{p}{,} \PYG{n}{Sum}\PYG{p}{)}
+\PYG{k}{else}\PYG{p}{:}
+    \PYG{n}{Sum} \PYG{o}{=} \PYG{n+nb}{int}\PYG{p}{(}\PYG{n}{x}\PYG{p}{[}\PYG{l+m+mi}{2}\PYG{p}{])} \PYG{o}{+} \PYG{n+nb}{int}\PYG{p}{(}\PYG{n}{x}\PYG{p}{[}\PYG{l+m+mi}{3}\PYG{p}{])}
+    \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}Сумма средних цифр числа = \PYGZdq{}}\PYG{p}{,} \PYG{n}{Sum}\PYG{p}{)}
+\end{Verbatim}
