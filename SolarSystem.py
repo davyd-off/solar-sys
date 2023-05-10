@@ -13,7 +13,7 @@ screen = pygame.display.set_mode(size)
 pygame.display.set_caption("Визуализация солнечной системы")
 
 # Загрузка изображения для планет
-sun_image = pygame.image.load(os.path.join("planets", "sun.png"))
+sun_image = pygame.image.load(os.path.join("sun.png"))
 mercury_image = pygame.image.load(os.path.join("mercury.png"))
 venus_image = pygame.image.load(os.path.join("venus.png"))
 earth_image = pygame.image.load(os.path.join("earth.png"))
