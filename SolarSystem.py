@@ -6,58 +6,116 @@ import os
 pygame.init()
 
 # Установка размера окна
-size = (800, 800)
-screen = pygame.display.set_mode(size)
+screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 
-# Заголовок окна
-pygame.display.set_caption("Визуализация солнечной системы")
+# Создание группы спрайтов с поддержкой слоев
+all_sprites = pygame.sprite.LayeredUpdates()
+
+# Создание спрайта кнопки закрытия
+close_button_image = pygame.image.load(os.path.join("code-solar-sys","close_button.png"))
+close_button_image = pygame.transform.scale(close_button_image, (50, 50))
+close_button_rect = close_button_image.get_rect()
+close_button_rect.topright = (screen.get_width() - 10, 10)
+close_button_sprite = pygame.sprite.Sprite()
+close_button_sprite.image = close_button_image
+close_button_sprite.rect = close_button_rect
+all_sprites.add(close_button_sprite, layer=1)
+
+# Создание поверхности для канваса с кнопками
+canvas_width, canvas_height = 400, 400
+canvas_surface = pygame.Surface((canvas_width, canvas_height))
+canvas_surface.fill((255, 255, 255))    
+
 
 # Загрузка изображения для планет
-sun_image = pygame.image.load(os.path.join("sun.png"))
-mercury_image = pygame.image.load(os.path.join("mercury.png"))
-venus_image = pygame.image.load(os.path.join("venus.png"))
-earth_image = pygame.image.load(os.path.join("earth.png"))
-mars_image = pygame.image.load(os.path.join("mars.png"))
-jupiter_image = pygame.image.load(os.path.join("jupiter.png"))
-saturn_image = pygame.image.load(os.path.join("saturn.png"))
-uranus_image = pygame.image.load(os.path.join("uranus.png"))
-neptune_image = pygame.image.load(os.path.join("neptune.png"))
+sun_image = pygame.image.load(os.path.join("code-solar-sys","sun.png"))
+mercury_image = pygame.image.load(os.path.join("code-solar-sys","mercury.png"))
+venus_image = pygame.image.load(os.path.join("code-solar-sys","venus.png"))
+earth_image = pygame.image.load(os.path.join("code-solar-sys","earth.png"))
+mars_image = pygame.image.load(os.path.join("code-solar-sys","mars.png"))
+jupiter_image = pygame.image.load(os.path.join("code-solar-sys","jupiter.png"))
+saturn_image = pygame.image.load(os.path.join("code-solar-sys","saturn.png"))
+uranus_image = pygame.image.load(os.path.join("code-solar-sys","uranus.png"))
+neptune_image = pygame.image.load(os.path.join("code-solar-sys","neptune.png"))
 
 # Загрузка фонового изображения(космос)
-background_image = pygame.image.load(os.path.join("space.png"))
+background_image = pygame.transform.scale(pygame.image.load(os.path.join("space.png")), (screen.get_width(), screen.get_height()))
 
 # Корректировка размера изображений планет
-sun_image = pygame.transform.scale(sun_image, (80, 80))
-mercury_image = pygame.transform.scale(mercury_image, (15, 15))
-venus_image = pygame.transform.scale(venus_image, (25, 25))
-earth_image = pygame.transform.scale(earth_image, (30, 30))
-mars_image = pygame.transform.scale(mars_image, (20, 20))
-saturn_image = pygame.transform.scale(saturn_image, (100, 40))
-uranus_image = pygame.transform.scale(uranus_image, (35, 35))
-jupiter_image = pygame.transform.scale(jupiter_image, (50, 50))
-neptune_image = pygame.transform.scale(neptune_image, (40, 40))
+sun_image = pygame.transform.scale(sun_image, (88, 88))
+mercury_image = pygame.transform.scale(mercury_image, (16.5, 16.5))
+venus_image = pygame.transform.scale(venus_image, (27.5, 27.5))
+earth_image = pygame.transform.scale(earth_image, (33, 33))
+mars_image = pygame.transform.scale(mars_image, (22, 22))
+saturn_image = pygame.transform.scale(saturn_image, (110, 44))
+uranus_image = pygame.transform.scale(uranus_image, (38.5, 38.5))
+jupiter_image = pygame.transform.scale(jupiter_image, (55, 55))
+neptune_image = pygame.transform.scale(neptune_image, (44, 44))
 
-# Создание словаря планет с их свойствами
-planets = [
-    {"name": "Sun", "image": sun_image, "radius": 200, "x": 400, "y": 390, "vx": 0, "vy": 0},
-    {"name": "Mercury", "image": mercury_image, "angle": 0, "distance": 65, "period": 0.24, "radius": 10},
-    {"name": "Venus", "image": venus_image, "angle": 0, "distance": 90, "period": 0.62, "radius": 20},
-    {"name": "Earth", "image": earth_image, "angle": 0, "distance": 125, "period": 1, "radius": 25},
-    {"name": "Mars", "image": mars_image, "angle": 0, "distance": 155, "period": 1.88, "radius": 15},
-    {"name": "Jupiter", "image": jupiter_image, "angle": 0, "distance": 195, "period": 11.86, "radius": 45},
-    {"name": "Saturn", "image": saturn_image, "angle": 0, "distance": 260, "period": 29.5, "radius": 40},
-    {"name": "Uranus", "image": uranus_image, "angle": 0, "distance": 320, "period": 84, "radius": 30},
-    {"name": "Neptune", "image": neptune_image, "angle": 0, "distance": 370, "period": 164.8, "radius": 35}
-]
+class Planet:
+    def __init__(self, name, image, angle, distance, period, radius, x, y):
+        self.name = name
+        self.image = image
+        self.angle = angle
+        self.distance = distance
+        self.period = period
+        self.radius = radius
+        self.x = x
+        self.y = y
+        self.vx = 0
+        self.vy = 0
+        self.past_positions = []
 
-# Инициализация положения планет
-for planet in planets[1:]:
-    planet["x"] = planets[0]["x"] + math.cos(planet["angle"]) * planet["distance"]
-    planet["y"] = planets[0]["y"] + math.sin(planet["angle"]) * planet["distance"]
+    def update_position(self, center_x, center_y):
+        self.angle += 0.05 * (1 / self.period)
+        self.x = center_x + math.cos(self.angle) * self.distance
+        self.y = center_y + math.sin(self.angle) * self.distance
+        self.past_positions.append((self.x, self.y))
 
-# Создание списка прошлых позиций каждой планеты
-for planet in planets[1:]:
-    planet["past_positions"] = []
+    def draw(self, screen):
+        image_rect = self.image.get_rect()
+        image_rect.center = (int(self.x), int(self.y))
+        screen.blit(self.image, image_rect)
+
+    def draw_trail(self, screen):
+        for i in range(1, len(self.past_positions)):
+            pygame.draw.line(screen, (153,153,0), self.past_positions[i-1], self.past_positions[i], 1)
+    
+    def check_planet_clicked(self, mouse_pos):
+        dx = mouse_pos[0] - self.x
+        dy = mouse_pos[1] - self.y
+        dist = math.sqrt(dx**2 + dy**2)
+        return dist <= self.radius
+
+
+sun = Planet("Sun", sun_image, 0, 0, 0, 200, screen.get_width() / 2, screen.get_height() / 2)
+mercury = Planet("Mercury", mercury_image, 0, 65, 0.54, 10, sun.x + sun.radius, sun.y)
+venus = Planet("Venus", venus_image, 0, 90, -0.82, 20, sun.x + sun.radius * 2, sun.y)
+earth = Planet("Earth", earth_image, 0, 125, 1.2, 25, sun.x + sun.radius * 3, sun.y)
+mars = Planet("Mars", mars_image, 0, 155, 1.88, 15, sun.x + sun.radius * 4, sun.y)
+jupiter = Planet("Jupiter", jupiter_image, 0, 195, 11.86, 45, sun.x + sun.radius * 5, sun.y)
+saturn = Planet("Saturn", saturn_image, 0, 260, 29.5, 40, sun.x + sun.radius * 6, sun.y)
+uranus = Planet("Uranus", uranus_image, 0, 320, 84, 30, sun.x + sun.radius * 7, sun.y)
+neptune = Planet("Neptune", neptune_image, 0, 370, 164.8, 200, sun.x + sun.radius * 8, sun.y)
+
+planets = [sun, mercury, venus, earth, mars, jupiter, saturn, uranus, neptune]
+
+def show_planet_info(planet):
+    # Создание поверхности для панели с информацией о планете
+    info_surface = pygame.Surface((canvas_width, canvas_height))
+    info_surface.fill((255, 255, 255))
+
+    # Отображение информации о планете
+    font = pygame.font.SysFont("Arial", 20)
+    text = font.render("Название: " + planet.name, True, (0, 0, 0))
+    info_surface.blit(text, (10, 10))
+    text = font.render("Радиус: "+str(planet.radius) + " km", True, (0, 0, 0))
+    info_surface.blit(text, (10, 50))
+    text = font.render("Расстояние до солнца: " + str(planet.distance) + " mln km", True, (0, 0, 0))
+    info_surface.blit(text, (10, 90))
+
+    # Отображение поверхности на канвасе
+    canvas_surface.blit(info_surface, (0, 0))
 
 # Установка частоты времени
 clock = pygame.time.Clock()
@@ -65,59 +123,47 @@ fps = 30
 
 # Запуск программы в цикле
 running = True
-while running:
 
+while running:
     # Обработка событий в pygame
     for event in pygame.event.get():
         # Проверка на выход
         if event.type == pygame.QUIT:
             running = False
+        elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            # Обработка клика на кнопке закрытия
+            if close_button_rect.collidepoint(event.pos):
+                running = False
+            # Проверка клика по планете    
+            for planet in planets:
+                if planet.check_planet_clicked(event.pos):
+                    show_planet_info(planet)
+
+
+
 
     # Фоновое изображение
     screen.blit(background_image, (0, 0))
 
     
-    # Отображение солнца в центре
-    image_rect = planets[0]["image"].get_rect()
-    image_rect.center = (int(planets[0]["x"]), int(planets[0]["y"]))
-    screen.blit(planets[0]["image"], image_rect)
+    # Отображение солнца
+    sun.draw(screen)
    
     # Рисование и обновление положение планет
     for planet in planets[1:]:
+        planet.update_position(sun.x, sun.y)
+        planet.draw_trail(screen)
+        planet.draw(screen)
 
-        # Увеличение угла в зависимости от периода планеты
-        # так, чтобы он совершил один оборот за заданный период
-        planet["angle"] += 0.05 * (1 / planet["period"])
-
-        # Рассчитать положение планеты по углу
-        planet["x"] = planets[0]["x"] + math.cos(planet["angle"]) * planet["distance"]
-        planet["y"] = planets[0]["y"] + math.sin(planet["angle"]) * planet["distance"]
-
-        # Добавить текущую позицию в список прошлых позиций
-        planet["past_positions"].append((planet["x"], planet["y"]))
-
-        # Рисуем след
-        for i in range(1, len(planet["past_positions"])):
-            pygame.draw.line(screen, (153,153,0), planet["past_positions"][i-1], planet["past_positions"][i], 1)
-
-        # Получение прямоугольника для изображения планеты и установка его центра в позицию планеты.
-        image_rect = planet["image"].get_rect()
-        image_rect.center = (int(planet["x"]), int(planet["y"]))
-        
-        # Изображение планеты
-        screen.blit(planet["image"], image_rect)
-
+    all_sprites.draw(screen)
+    screen.blit(canvas_surface, (10, 10))
     # Обновление дисплея
     pygame.display.update()
+
+    
 
     # Пауза (кадры в секунду)
     clock.tick(fps)
 
 # Выход из pygame
 pygame.quit()
-
-#-------------------------------------------------------------
-#Добавить ползунок изменнеия скорости движения планет
-#Изминить принцип вычисления скорости движения планет(относительно скорости движения одной планеты вычислить скорости последующих планет)
-#При нажатии на планету добавить вывод информации о данной планете
-#-------------------------------------------------------------
