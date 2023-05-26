@@ -1,4 +1,5 @@
 
+import os
 import math
 
 import pygame
@@ -16,7 +17,7 @@ info_size_height = info_size_width+info_size_width*0.5
 all_sprites = pygame.sprite.LayeredUpdates()
 
 # Создание спрайта кнопки закрытия
-close_button_image = pygame.image.load("close_button.png")
+close_button_image = pygame.image.load(os.path.join("code-solar-sys","close_button.png"))
 close_button_image = pygame.transform.scale(close_button_image, (50, 50))
 close_button_rect = close_button_image.get_rect()
 close_button_rect.topright = (screen.get_width() - 10, 10)
@@ -30,27 +31,27 @@ info_planet_img = pygame.image.load("none_menu.png")
 
 #-------------------------------------------------------------------
 # Загрузка изображении планет и информации
-sun_image = pygame.image.load("sun.png")
-mercury_image = pygame.image.load("mercury.png")
-venus_image = pygame.image.load("venus.png")
-earth_image = pygame.image.load("earth.png")
-mars_image = pygame.image.load("mars.png")
-jupiter_image = pygame.image.load("jupiter.png")
-saturn_image = pygame.image.load("saturn.png")
-uranus_image = pygame.image.load("uranus.png")
-neptune_image = pygame.image.load("neptune.png")
+sun_image = pygame.image.load(os.path.join("code-solar-sys","sun.png"))
+mercury_image = pygame.image.load(os.path.join("code-solar-sys","mercury.png"))
+venus_image = pygame.image.load(os.path.join("code-solar-sys","venus.png"))
+earth_image = pygame.image.load(os.path.join("code-solar-sys","earth.png"))
+mars_image = pygame.image.load(os.path.join("code-solar-sys","mars.png"))
+jupiter_image = pygame.image.load(os.path.join("code-solar-sys","jupiter.png"))
+saturn_image = pygame.image.load(os.path.join("code-solar-sys","saturn.png"))
+uranus_image = pygame.image.load(os.path.join("code-solar-sys","uranus.png"))
+neptune_image = pygame.image.load(os.path.join("code-solar-sys","neptune.png"))
 
 # planet_img = [sun_image,mercury_image,venus_image,earth_image,mars_image,jupiter_image,saturn_image,uranus_image,neptune_image]
 
-sun_image_info = pygame.image.load("sun_info.png")
-mercury_image_info = pygame.image.load("mercury_info.png")
-venus_image_info = pygame.image.load("venus_info.png")
-earth_image_info = pygame.image.load("earth_info.png")
-mars_image_info = pygame.image.load("mars_info.png")
-jupiter_image_info = pygame.image.load("jupiter_info.png")
-saturn_image_info = pygame.image.load("saturn_info.png")
-uranus_image_info = pygame.image.load("uranus_info.png")
-neptune_image_info = pygame.image.load("neptune_info.png")
+sun_image_info = pygame.image.load(os.path.join("code-solar-sys","sun_info.png"))
+mercury_image_info = pygame.image.load(os.path.join("code-solar-sys","mercury_info.png"))
+venus_image_info = pygame.image.load(os.path.join("code-solar-sys","venus_info.png"))
+earth_image_info = pygame.image.load(os.path.join("code-solar-sys","earth_info.png"))
+mars_image_info = pygame.image.load(os.path.join("code-solar-sys","mars_info.png"))
+jupiter_image_info = pygame.image.load(os.path.join("code-solar-sys","jupiter_info.png"))
+saturn_image_info = pygame.image.load(os.path.join("code-solar-sys","saturn_info.png"))
+uranus_image_info = pygame.image.load(os.path.join("code-solar-sys","uranus_info.png"))
+neptune_image_info = pygame.image.load(os.path.join("code-solar-sys","neptune_info.png"))
 
 info_img = [sun_image_info,mercury_image_info,venus_image_info,earth_image_info,mars_image_info,jupiter_image_info,saturn_image_info,uranus_image_info,neptune_image_info]
 
@@ -58,15 +59,15 @@ info_img = [sun_image_info,mercury_image_info,venus_image_info,earth_image_info,
 
 #-------------------------------------------------------------------
 # Загрузка изображения планет в нажатом состоянии
-# sun_image_click = pygame.image.load(os.path.join("sun.png"))
-# mercury_image_click = pygame.image.load(os.path.join("mercury.png"))
-# venus_image_click = pygame.image.load(os.path.join("venus.png"))
-# earth_image_click = pygame.image.load(os.path.join("earth.png"))
-# mars_image_click = pygame.image.load(os.path.join("mars.png"))
-# jupiter_image_click = pygame.image.load(os.path.join("jupiter.png"))
-# saturn_image_click = pygame.image.load(os.path.join("saturn.png"))
-# uranus_image_click = pygame.image.load(os.path.join("uranus.png"))
-# neptune_image_click = pygame.image.load(os.path.join("neptune.png"))
+# sun_image_click = pygame.image.load(os.path.join("code-solar-sys",os.path.join("sun.png")))
+# mercury_image_click = pygame.image.load(os.path.join("code-solar-sys",os.path.join("mercury.png")))
+# venus_image_click = pygame.image.load(os.path.join("code-solar-sys",os.path.join("venus.png")))
+# earth_image_click = pygame.image.load(os.path.join("code-solar-sys",os.path.join("earth.png")))
+# mars_image_click = pygame.image.load(os.path.join("code-solar-sys",os.path.join("mars.png")))
+# jupiter_image_click = pygame.image.load(os.path.join("code-solar-sys",os.path.join("jupiter.png")))
+# saturn_image_click = pygame.image.load(os.path.join("code-solar-sys",os.path.join("saturn.png")))
+# uranus_image_click = pygame.image.load(os.path.join("code-solar-sys",os.path.join("uranus.png")))
+# neptune_image_click = pygame.image.load(os.path.join("code-solar-sys",os.path.join("neptune.png")))
 #-------------------------------------------------------------------
 
 
@@ -95,13 +96,13 @@ neptune_image_info = pygame.transform.scale(neptune_image_info, (info_size_width
 #-------------------------------------------------------------------
 
 # Загрузка фонового изображения(космос)
-background_image = pygame.transform.scale(pygame.image.load("space.png"), (screen.get_width(), screen.get_height()))
-background_way = pygame.transform.scale(pygame.image.load("space1.png"), (1536, 864))
+background_image = pygame.transform.scale(pygame.image.load(os.path.join("code-solar-sys","space.png")), (screen.get_width(), screen.get_height()))
+background_way = pygame.transform.scale(pygame.image.load(os.path.join("code-solar-sys","space1.png")), (1536, 864))
 background_way_rect = background_way.get_rect()
 background_way_rect.centerx = screen.get_rect().centerx
 background_way_rect.centery = screen.get_rect().centery
 
-# pygame.image.load("space1.png")
+# pygame.image.load(os.path.join("code-solar-sys","space1.png"))
 
 
 def print_text(message, x, y, font_color = (0,0,0), font_type = "Arial.ttf", font_size = 20):
