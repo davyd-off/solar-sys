@@ -17,7 +17,9 @@
 
 Группа совместно создает программу, представляющую собой модель солнечной системы. Образовательная программа предназначена не только для взрослых, но и для детей как для дошкольников, так и для выпускников школ.
 
-В отчёте приведено описание используемых библиотек, инструментария и системы контроля версий для написания программы на языке программирования Python3.}
+В отчёте приведено описание используемых библиотек, инструментария и системы контроля версий для написания программы на языке программирования Python3.
+
+Также в отчёте представлен результат проверки работоспособности программы.}
 \keysRU{кросплатформенная программа, планеты, информация}
 \date{\the\year}
 
@@ -34,8 +36,7 @@
 \begin{itemize}
     \item \textbf{Описание цели и задач: \newline}
 \underline{\textit{Цель}}: Создать кроссплатформенную программу с использованием языка программирования Python3 и библиотеки tkinter (или с использованием другой библиотеки). \newline
-\underline{\textit{Задачи}}:
-
+\underline{\textit{Задачи}}~\label{zadachi}:
     \begin{itemize}
         \item информационная программа по солнечной системе;
         \item при нажатии на планету выдаётся информация о ней:
@@ -50,7 +51,7 @@
         \item скорость движения планеты должна регулироваться
     \end{itemize}
 
-\underline{\textit{Требования к коду программы}}:
+\underline{\textit{Требования к коду программы}}~\label{requirement}:
     \begin{itemize}
         \item Программа должна соответствовать PEP8.
         \item Программа должна быть документирована. Документация должна быть на русском или на английском языке.
@@ -137,31 +138,163 @@
 
 \chapter{Проверка работоспособности программы}\label{ch2}
 \section{Описание парадигмы, написанных модулей}
+Первоначально происходит задача параметров окна (установка размера, добавление кнопки закрытия), загрузка изображений: планет, информации, фона, траектории, с последующей их корректировкой. Функция \textbf{print-text} отвечает за вывод текста на экран (см. \texttt{ПРИЛОЖЕНИЕ} на стр.~\pageref{code:solar-sys}).
 
-\section{Диаграмма (UML)}
+В классе \textbf{Planet} определены следующие методы: \textbf{init}, \textbf{update-position}, \textbf{draw}, \textbf{show-planet-info}, \textbf{check-planet-clicked}, \textbf{update-period}, \textbf{change-period} (см. \texttt{ПРИЛОЖЕНИЕ} на стр.~\pageref{code:solar-sys}).
+
+Метод \textbf{init} - конструктор класса Planet. Метод \textbf{update-position} обновляет позицию объекта, который движется по окружности. Метод \textbf{draw} отвечает за отрисовку объекта на экране. Метод \textbf{show-planet-info} отвечает за вывод информации о планете на экран. Метод \textbf{check-planet-clicked} отвечает за проверку, была ли планета кликнута мышью. Метод \textbf{update-period} отвечает за обновление периода вращения планеты. Метод \textbf{change-period} отвечает за изменение периода вращения планеты на заданное значение.
+
+Далее происходит создание объектов класса \textbf{Planet} и объявление массива планет (см. \texttt{ПРИЛОЖЕНИЕ} на стр.~\pageref{code:solar-sys}).
+
+Функция \textbf{plus-speed} отвечает за ускорение вращения планеты Земля, т.к. движение планет взаимосвязано. В нашем же случае планеты движутся относительно Земли. Функция \textbf{minus-speed} отвечает за замедление вращения Земли (см. \texttt{ПРИЛОЖЕНИЕ} на стр.~\pageref{code:solar-sys}).
+
+В классе \textbf{Button} определены следующие методы: \textbf{init}, \textbf{draw}, \textbf{do-action} (см. \texttt{ПРИЛОЖЕНИЕ} на стр.~\pageref{code:solar-sys}).
+
+Метод \textbf{init} - конструктор класса Button. Метод \textbf{draw} отвечает за отображение кнопки на экране. Метод \textbf{do-action} отвечает за вызов функции, связанной с кнопкой, если она была передана в конструкторе.
+
+Далее происходит создание объектов класса \textbf{Button}, вычисление позиций кнопок, вычисление позиции коэфицента скорости планет (см. \texttt{ПРИЛОЖЕНИЕ} на стр.~\pageref{code:solar-sys}).
+
+Далее происходит установка частоты кадров и времени, а также запуск программы в цикле, который обрабатывает события, совершённые пользователем (см. \texttt{ПРИЛОЖЕНИЕ} на стр.~\pageref{code:solar-sys}).
+
+После отображаются фоновое изображение, кнопки "Замедлить" и "Ускорить", объект "Солнце". Далее осуществляются отображение и обновление положения планет, отображение информационной панели, отображение коэффициента скорости планет, обновление дисплея. Также осуществляется пауза (кадры в секунду) приложения (см. \texttt{ПРИЛОЖЕНИЕ} на стр.~\pageref{code:solar-sys}).
+
+\section{Диаграмма (UML)}~\label{uml}
 UML (с английского аббревиатура расшифровывается как \textit{Unified Modeling Language} — унифицированный язык моделирования) — это способ наглядно описать архитектуру, проектирование и реализацию комплексных программных систем. Код типичного приложения включает в себя тысячи строк, за связями и иерархиями которых очень непросто уследить. С помощью диаграмм UML структуру программы можно разделить на компоненты и подкомпоненты.
 
 Ниже представлена диаграмма UML, описывающая связи модуля между компонентами методов:
 \begin{figure}[h]
-\centering
-\includegraphics[width=0.8\linewidth]{src/SolarSystem.png}
-\caption{Диаграмма UML, описывающая архитектуру кода программы}
-\label{fig:mpr}
+    \centering
+    \includegraphics[width=0.8\linewidth]{src/SolarSystem.png}
+    \caption{Диаграмма UML, описывающая архитектуру кода программы}
+    \label{fig:my_UML}
 \end{figure}
 
+\section{Тестирование программы}~\label{test}
+При запуске кроссплатформенной программы на экране появляется её первоначальный вид, с коэффициентом скорости планет 100\%:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{src/test/Открытие.png}
+    \caption{Открытие программы}
+    \label{fig:open}
+\end{figure}
 
-\section{Тестирование программы}
+При нажатии на кнопку "Ускорить" коэффициент скорости планет увеличивается на 25\% (макс. 200\%):
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{src/test/up_quarter1.png}
+    \caption{Увеличение скорости планет на 125\%}
+    \label{fig:up-125}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{src/test/up_quarter2.png}
+    \caption{Увеличение скорости планет на 150\%}
+    \label{fig:up-150}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{src/test/up_quarter3.png}
+    \caption{Увеличение скорости планет на 175\%}
+    \label{fig:up-175}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{src/test/up_quarter4.png}
+    \caption{Увеличение скорости планет на 200\%}
+    \label{fig:up-200}
+\end{figure}
 
+При нажатии на кнопку "Замедлить" коэффициент скорости планет уменьшается на 25\% (мин. 0\%):
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{src/test/down_quarter1.png}
+    \caption{Уменьшение скорости планет на 75\%}
+    \label{fig:up-75}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{src/test/down_ quarter2.png}
+    \caption{Уменьшение скорости планет на 50\%}
+    \label{fig:up-50}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{src/test/down_ quarter3.png}
+    \caption{Уменьшение скорости планет на 25\%}
+    \label{fig:up-25}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{src/test/null.png}
+    \caption{Уменьшение скорости планет на 0\%}
+    \label{fig:up-0}
+\end{figure}
 
+При нажатии на объект Солнечной системы появляется информация о нём:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{src/test/После_нажатия_на планету2.png}
+    \caption{Нажатие на объект Солнечной системы}
+    \label{fig:click-open}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{src/test/Нажатие_на_планету.png}
+    \caption{Отображение информации об объекте}
+    \label{fig:info}
+\end{figure}
+
+При нажатии кнопки закрытия на панели отображения информации об объекте информационное окно закрывается:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{src/test/Нажатие_на_кнопку.png}
+    \caption{Закрывание панели с информацией}
+    \label{fig:click-close}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{src/test/После_нажатия.png}
+    \caption{Возвращение к начальному виду программы}
+    \label{fig:after-info}
+\end{figure}
+
+При нажатии на кнопку закрытия программы осуществляется выход из неё:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{src/test/Закрытие_программы.png}
+    \caption{Закрывание программы}
+    \label{fig:click-close-programm}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{src/test/После_закрытия_программы.png}
+    \caption{После закрывания программы}
+    \label{fig:after-close-programm}
+\end{figure}
 
 \chapter*{Заключение}
 \addcontentsline{toc}{chapter}{Заключение}
+В ходе выполнения лабораторной работы была создана кроссплатформенная программа с использованием языка программирования Python3 и библиотеки Pygame.
+
+Программа создавалась в объектно-ориентированной парадигме.
+
+Программа представляет собой модель Солнечной системы.
+
+Звезда Солнце~\cite{infoRUsun}, планета Меркурий~\cite{infoRUmercuri}, планета Венера~\cite{infoRUvenera}, планета Земля~\cite{infoRUearth}, планета Марс~\cite{infoRUmars}, планета Юпитер~\cite{infoRUjupiter}, планета Сатурн~\cite{infoRUsaturn}, планета Уран~\cite{infoRUuran}, планета Нептун~\cite{infoRUneptun} - все эти объекты были добавлены в программу. Все планеты движутся по своим орбитам. Имеются две кнопки, при нажатии на которые скорость планет либо увеличивается, либо уменьшается. При нажатии на один из объектов появляется информация о нём (см. \texttt{Задачи} на стр.~\pageref{zadachi}).
+
+Код программы оформлен в соответствии с \texttt{Требования к коду программы} на странице~\pageref{requirement}.
+
+Разработка программы и отчёта производилась с использованием системы контроля версий Git, а именно с помощью онлайн-хранилища GitHub.
+
+По коду программы была создана диаграмма UML (см. на стр.~\pageref{uml}).
+
+Проверка работоспособности программы была проведена успешно (см. \texttt{Тестирование программы} на стр.~\pageref{test}).
+
+Каждый член команды успешно выполнил поставленные ему задачи.
+
 Ссылка на репозиторий проекта:~\textcolor{blue}{\url{https://github.com/davyd-off/solar-sys}}
 
-Все члены группы оставляют commt'ы, отследить их можно по ссылке:~\textcolor{blue}{\url{https://github.com/davyd-off/solar-sys/network}}
-
-
-
+Все члены группы оставляли commt'ы, отследить их можно по ссылке:~\textcolor{blue}{\url{https://github.com/davyd-off/solar-sys/network}}
 
 \newpage
 \addcontentsline{toc}{chapter}{Список использованной литературы}
