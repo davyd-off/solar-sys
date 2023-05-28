@@ -96,6 +96,17 @@ background_way_rect.centery = screen.get_rect().centery
 
 # Функция написания текста на экране
 def print_text(message, x, y, font_color = (0,0,0), font_type = "Arial.ttf", font_size = 30):
+    """
+    Функция отвечает за вывод текста на экран.
+
+    Args:
+        message - текст, который нужно вывести на экран
+        x - координата по оси X, где должен быть расположен левый край текста
+        y - координата по оси Y, где должен быть расположен верхний край текста
+        font_color - цвет текста. По умолчанию равен черному цвету (0, 0, 0)
+        font_type - тип шрифта. По умолчанию равен "Arial.ttf"
+        font_size - размер шрифта. По умолчанию равен 20 
+    """
     font_type = pygame.font.SysFont(font_type, font_size)
     text = font_type.render(message, True, font_color)    
     screen.blit(text, (x, y))
@@ -104,6 +115,22 @@ def print_text(message, x, y, font_color = (0,0,0), font_type = "Arial.ttf", fon
 # Класс планет
 class Planet:
     def __init__(self, name, image, info, angle, distance, std_period, period, radius, x, y):
+        """
+        Конструктор класса Planet
+        
+        Args:
+
+        name - имя объекта
+        image - изображение объекта
+        info - дополнительная информация об объекте
+        angle - начальный угол объекта (в радианах)
+        distance - расстояние от центра координат до объекта
+        std_period - стандартный период обновления позиции объекта
+        period - текущий период обновления позиции объекта
+        radius - радиус объекта
+        x - координата x объекта
+        y - координата y объекта
+        """
         self.name = name
         self.image = image
         self.info = info
@@ -117,23 +144,54 @@ class Planet:
 
     # Обновление позиции планеты
     def update_position(self, center_x, center_y):
+        """
+        Функция обновляет позицию объекта, который движется по окружности с центром в (center_x, center_y) 
+        и радиусом self.distance.
+        
+        Args:
+
+        center_x - координата x центра окружности
+        center_y - координата y центра окружности
+        """
         self.angle += 0.05 * (1 / self.period)
         self.x = center_x + math.cos(self.angle) * self.distance
         self.y = center_y + math.sin(self.angle) * self.distance
 
     # Отображение планеты
     def draw(self, screen):
+        """
+        Функция отвечает за отрисовку объекта на экране.
+        
+        Args:
+
+        screen - объект pygame.display, на котором будет отрисован объект
+        """
         image_rect = self.image.get_rect()
         image_rect.center = (int(self.x), int(self.y))
         screen.blit(self.image, image_rect)
     
     # Отображение информации о планете
     def show_planet_info(self):
+        """
+        Функция отвечает за вывод информации о планете на экран.
+        """
         global info_planet_img
         info_planet_img = self.info
 
     # Проверка нажатия на планету
     def check_planet_clicked(self, mouse_pos):
+        """
+        Функция отвечает за проверку, была ли планета кликнута мышью.
+        
+        Args:
+
+        mouse_pos - кортеж координат мыши (x, y)
+
+        Returns:
+
+        Возвращает значение True, если расстояние между планетой и точкой, в которой была кликнута мышь, меньше или равно радиусу планеты. 
+        В противном случае возвращает значение False.
+        """
         dx = mouse_pos[0] - self.x
         dy = mouse_pos[1] - self.y
         dist = math.sqrt(dx**2 + dy**2)
@@ -142,6 +200,9 @@ class Planet:
 
     # Обновление периуда(скорости) планеты
     def update_period(self):
+        """
+        Функция отвечает за обновление периода вращения планеты.
+        """
         if self.name != "Earth":
             self.change_period(earth.period/(earth.std_period/self.std_period))
         elif self.period >1.17 and self.period < 1.23:
@@ -149,6 +210,13 @@ class Planet:
 
     # Изменение периуда планеты
     def change_period(self, set_period):
+        """
+        Функция отвечает за изменение периода вращения планеты на заданное значение.
+        
+        Args:
+
+        set_period - новое значение периода вращения планеты
+        """
         self.period = set_period
 
 
@@ -168,6 +236,9 @@ planets = [sun, mercury, venus, earth, mars, jupiter, saturn, uranus, neptune]
 
 # Функция добавления скорости вращения планеты
 def plus_speed():
+    """
+    Функция отвечает за ускорение вращения Земли.
+    """
     global kof_value
     if kof_value == 0:
         earth.period = 5.04
@@ -181,6 +252,9 @@ def plus_speed():
 
 # Функция отнимания скорости вращения планеты
 def minus_speed():
+    """
+    Функция отвечает за замедление вращения Земли.
+    """
     global kof_value
     if earth.period<5:
         kof_value -= 25
@@ -196,6 +270,16 @@ def minus_speed():
 # Класс кнопка
 class Button:
     def __init__(self, width, height, action = None, regional_butt = False):
+        """
+        Конструктор класса Button. 
+
+        Args:
+
+        width - ширина кнопки
+        height - высота кнопки
+        action - функция, которая будет вызываться при нажатии на кнопку. По умолчанию равна None.
+        regional_butt=False - булево значение, указывающее, является ли кнопка региональной.И свойство butt_rect будет использоваться для определения местоположения кнопки на экране.
+        """
         self.width = width
         self.height = height
         self.color = (13,162,58)
@@ -205,6 +289,15 @@ class Button:
 
     # Отображение кнопки
     def draw(self, x, y, message=None):
+        """
+        Функция отвечает за отображение кнопки на экране.
+
+        Args:
+
+        x - координата по оси X левого верхнего угла кнопки на экране
+        y - координата по оси Y левого верхнего угла кнопки на экране
+        message=None - текст, который будет отображаться на кнопке
+        """
         if self.image is False:
             self.butt_rect = pygame.Rect(x, y, self.width, self.height)
             pygame.draw.rect(screen, self.color, self.butt_rect)
@@ -214,6 +307,9 @@ class Button:
             
     # Выполнение функции копки(если такая присутствует)
     def do_action(self):
+        """
+        Функция отвечает за вызов функции, связанной с кнопкой, если она была передана в конструкторе.
+        """
         if self.action is not None:
             self.action()
 
